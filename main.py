@@ -45,7 +45,7 @@ async def scrape_website():
         dolar = div_dolar.find('strong').text
         dolar_limpio = dolar.replace(' ', '').replace(',', '.')
         ValorDolar = float(dolar_limpio)    
-        valorDolar_redondeado = round(valorEuro, 2)
+        valorDolar_redondeado = round(ValorDolar, 2)
         
         
         div_yuan = soup.find('div', id='yuan')
