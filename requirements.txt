@@ -2,3 +2,4 @@ fastapi
 httpx
 beautifulsoup4
 cachetools
+"uvicorn[standard]"
