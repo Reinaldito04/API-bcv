@@ -5,8 +5,12 @@ from fastapi import HTTPException
 from bs4 import BeautifulSoup
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
+from cachetools import TTLCache
+
 
 app = FastAPI()
+
+cache = TTLCache(maxsize=1, ttl=3600)
 
 app.add_middleware(
     CORSMiddleware,
@@ -77,5 +81,11 @@ async def scrape_website():
         raise HTTPException(status_code=500, detail=f"Error al acceder a la URL: {str(e)}")
 @app.get("/scrape")
 async def scrape():
-    result = await scrape_website()
-    return result
+    cache_result =cache.get("scraped_data")
+    
+    if cache_result:
+        return cache_result
+    else:
+        result = await scrape_website()
+        cache["scraped_data"] = result
+        return result
